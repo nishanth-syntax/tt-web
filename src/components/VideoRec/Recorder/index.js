@@ -1,99 +1,67 @@
 import React from "react";
 import Container from '@mui/material/Container';
 import { useDispatch, useSelector } from 'react-redux'
+import { ReactMic } from 'react-mic';
+import { forEach, get } from 'lodash';
 
 import StartRecButton from '../StartRecButton'
-import VideoPreview from "../VideoPreview";
 import { recorderStyle } from "./styles";
-import { startTimer } from "../../../store/VideoRec/reducer";
-import ProgressDisplay from '../Timer/Progress'
+import { startTimer, stopTimer } from "../../../store/VideoRec/reducer";
+import { initSpeechRecognition, stopSpeechRecognition, getSpeechRecognition } from "../../../utils/speechRecognition";
+
+import { SUB_COLOR, MAIN_COLOR } from "../../../containers/constants";
 
 export const RecoderComponent = () => {
-    const mimeType = "video/webm";
-    const dispatch = useDispatch();
+    const dispatch = useDispatch();    
     const timerStarted = useSelector((state) => state?.VideoRecReducer?.timerStarted)
-
-    const [permission, setPermission] = React.useState(false);
-    const mediaRecorder = React.useRef(null);
-    const liveVideoFeed = React.useRef(null);
-    const [recordingStatus, setRecordingStatus] = React.useState("inactive");
-    const [stream, setStream] = React.useState(null);
-    const [videoChunks, setVideoChunks] = React.useState([]);
-    const [audioChunks, setAudioChunks] = React.useState([]);
-    const [audio, setAudio] = React.useState(null);
-    const [recordedVideo, setRecordedVideo] = React.useState(null);
-
-    const getCameraPermission = async () => {
-        setRecordedVideo(null);
-        if ("MediaRecorder" in window) {
-            try {
-                const videoConstraints = {
-                    audio: false,
-                    video: true,
-                };
-                const audioConstraints = { audio: true };
-                // create audio and video streams separately
-                const audioStream = await navigator.mediaDevices.getUserMedia(
-                    audioConstraints
-                );
-                const videoStream = await navigator.mediaDevices.getUserMedia(
-                    videoConstraints
-                );
-                setPermission(true);
-                //combine both audio and video streams
-                const combinedStream = new MediaStream([
-                    ...videoStream.getVideoTracks(),
-                    ...audioStream.getAudioTracks(),
-                ]);
-                setStream(combinedStream);
-                //set videostream to live feed player
-                if (liveVideoFeed.current) liveVideoFeed.current.srcObject = videoStream;
-            } catch (err) {
-                alert(err.message);
-            }
-        } else {
-            alert("The MediaRecorder API is not supported in your browser.");
-        }
-    };
+    const [recStart, setRecStart] =  React.useState()
 
     React.useEffect(() => {
-        getCameraPermission();
+        initSpeechRecognition(`te`);
     }, [])
 
-    const initRecording = () => {
-        setRecordingStatus("recording");
-        const media = new MediaRecorder(stream, { mimeType });
-        mediaRecorder.current = media;
-        mediaRecorder.current.start();
-        let localVideoChunks = [];
-        mediaRecorder.current.ondataavailable = (event) => {
-            if (typeof event.data === "undefined") return;
-            if (event.data.size === 0) return;
-            localVideoChunks.push(event.data);
-        };
-        setVideoChunks(localVideoChunks);
+    const onStop = (recordedBlob) => {
+        stopSpeechRecognition();
     }
 
-    const stopRecording = () => {
-        setPermission(false);
-        setRecordingStatus("inactive");
-        mediaRecorder.current.stop();
-        mediaRecorder.current.onstop = () => {
-            const videoBlob = new Blob(videoChunks, { type: mimeType });
-            const videoUrl = URL.createObjectURL(videoBlob);
-            setRecordedVideo(videoUrl);
-            setVideoChunks([]);
-        };
+    const getRecognition = (txData) => {
+        const txResults = get(txData, `results`);
+        Object.keys(txResults).forEach((key) => {
+            const txObj = txResults?.[key];     
+            console.warn(txObj?.[0]?.transcript);
+        })
+        // txResults.forEach(element => {
+        //     const txObj = element?.[0];       
+        //     const { transcript } = txObj;
+        //     console.warn(`transcript:`, transcript) 
+        // });        
     }
+
+    const onData = (recordedBlob) => {}
 
     const startRecording = () => {
-        dispatch(startTimer())
+        if (!recStart) {
+            dispatch(startTimer())
+            getSpeechRecognition(getRecognition);    
+            setRecStart(true)
+            return;
+        }
+
+        dispatch(stopTimer())
+        stopSpeechRecognition();
+        setRecStart(false)
     }
 
     return (
         <Container sx={recorderStyle}>
-            <ProgressDisplay />
-            <VideoPreview liveVideoFeed={liveVideoFeed} />             
+            <ReactMic
+                record={timerStarted}
+                className="sound-wave"
+                mimeType="audio/mp3"
+                onStop={onStop}
+                onData={onData}
+                strokeColor={SUB_COLOR}
+                backgroundColor={MAIN_COLOR} />
             <StartRecButton startRecording={startRecording} />
         </Container>
     )
