@@ -12,14 +12,14 @@ export const videoRecorderSlice = createSlice({
         languageClear: (state) => {
             state.langageSelected = LANG_DEF
         },
-        recordingStart: (state) => {
-            state.recIsPlaying = true
+        startTimer: (state) => {
+            state.timerStarted = true
         },
-        recordingStop: (state) => {
-            state.recIsPlaying = false
+        stopTimer: (state) => {
+            state.timerStarted = false
         },
     }
 })
 
-export const { languageSet, languageClear } = videoRecorderSlice.actions
+export const { languageSet, languageClear, startTimer, stopTimer } = videoRecorderSlice.actions
 export default videoRecorderSlice.reducer

@@ -1,8 +1,13 @@
 import { DEF_COLOR, MAIN_COLOR, SUB_COLOR } from '../../../containers/constants'
-
+import { mainStyle } from '../../../containers/styles'
 export const recorderStyle = {
+    ...mainStyle,
+    alignItems: 'center',
+    alignContent: 'center',
+    justifyContent: 'center',
     bgcolor: MAIN_COLOR,
-    height: '50vh',   
+    width: '100%',
+    height: '100vh',   
     borderRadius: 1,
-    padding: 0
+    padding: 0,
 }

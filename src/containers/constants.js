@@ -1,5 +1,5 @@
-export const MAIN_COLOR = `#470c85`;
-export const SUB_COLOR = `#ccc000`;
+export const MAIN_COLOR = `#000ccc`;
+export const SUB_COLOR = `#fff`;
 export const DEF_COLOR = `#fff`;
 export const TRANSPARENT = `#transparent`;
 

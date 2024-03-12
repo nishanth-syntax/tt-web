@@ -1,8 +1,7 @@
-import { DEF_COLOR, MAIN_COLOR } from "../../../../containers/constants"
+import { DEF_COLOR, MAIN_COLOR, TRANSPARENT } from "../../../../containers/constants"
 import { mainStyle } from "../../../../containers/styles"
 
 export const showTimerStyle = {
-    ...mainStyle,    
-    height: '100%',   
-    borderRadius: 1,     
+    ...mainStyle,
+    height: '100'    
 }

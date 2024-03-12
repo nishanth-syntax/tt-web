@@ -6,5 +6,5 @@ export const mainStyle = {
     width: '100%',
     height: '100vh',
     background: MAIN_COLOR,
-    padding: 10,
+    padding: 0,
 }
