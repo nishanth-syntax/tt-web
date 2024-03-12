@@ -9,12 +9,13 @@ const VideoPreview = ({ liveVideoFeed }) => {
 
     const videoStyle = {
         bgcolor: MAIN_COLOR,
-        width: '100%',
-        height: '100%',
+        width: '100%',        
         display: 'flex',
         alignItems: 'center',
         alignContent: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        filter: timerStarted ? 'none' : 'blur(10px)',
+        padding: 10
     }
     return (
         <Container sx={videoStyle}>

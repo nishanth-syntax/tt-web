@@ -2,9 +2,9 @@ import { SUB_COLOR } from "../../../containers/constants"
 
 export const recButtonStyle = {
     position: 'absolute',
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     bottom: 30,
     borderRadius: '50%',
-    bgcolor: SUB_COLOR,
+    backgroundColor: SUB_COLOR,
 }

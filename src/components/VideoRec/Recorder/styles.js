@@ -5,9 +5,6 @@ export const recorderStyle = {
     alignItems: 'center',
     alignContent: 'center',
     justifyContent: 'center',
-    bgcolor: MAIN_COLOR,
-    width: '100%',
-    height: '100vh',   
-    borderRadius: 1,
-    padding: 0,
+    bgcolor: MAIN_COLOR,    
+    borderRadius: 1,    
 }

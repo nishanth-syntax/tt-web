@@ -6,6 +6,7 @@ import StartRecButton from '../StartRecButton'
 import VideoPreview from "../VideoPreview";
 import { recorderStyle } from "./styles";
 import { startTimer } from "../../../store/VideoRec/reducer";
+import ProgressDisplay from '../Timer/Progress'
 
 export const RecoderComponent = () => {
     const mimeType = "video/webm";
@@ -91,8 +92,9 @@ export const RecoderComponent = () => {
 
     return (
         <Container sx={recorderStyle}>
-            <VideoPreview liveVideoFeed={liveVideoFeed} />
-            <StartRecButton startRecording={startRecording} />            
+            <ProgressDisplay />
+            <VideoPreview liveVideoFeed={liveVideoFeed} />             
+            <StartRecButton startRecording={startRecording} />
         </Container>
     )
 }
