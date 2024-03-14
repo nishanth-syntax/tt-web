@@ -68,7 +68,7 @@ export const RecoderComponent = () => {
 
     return (
         <Container sx={recorderStyle}>
-            <Button sx={{display: transcript?.length > 0 ? 'flex' : 'none', padding: 5}} color="info" onClick={clickToCopy}>
+            <Button sx={{display: transcript?.length > 0 ? 'flex' : 'none', padding: 5, color:SUB_COLOR}} color="info" onClick={clickToCopy}>
                 Click to Copy Text
             </Button>
             <Box sx={{
@@ -78,21 +78,20 @@ export const RecoderComponent = () => {
                 overflow: 'auto',
                 width: '100%',
                 height: 800,
-                backgroundColor: MAIN_COLOR,
+                backgroundColor: `${SUB_COLOR}05`,
                 alignContent: 'center',
                 alignItems: 'center',
                 justifyContent: 'center',
                 '& ul': { padding: 1 },
             }}>
                 <List ref={scrollRef}>
-                    <span>
-                        {`${transcript}`}
-                    </span>
+                    <span style={{fontSize: 22}}>{`${transcript}`}</span>
                 </List>
             </Box>
-            <Box sx={{ position: 'absolute', bottom: 0 }}>
+            <Box sx={{ position: 'absolute', top: 10 }}>
                 <ReactMic
                     record={timerStarted}
+                    className="sound-wave"
                     visualSetting="sinewave"
                     mimeType="audio/mp3"
                     noiseSuppression={true}
@@ -100,10 +99,8 @@ export const RecoderComponent = () => {
                     onStop={onStop}
                     onData={onData}
                     strokeColor={timerStarted ? MAIN_COLOR : SUB_COLOR}
-                    backgroundColor={MAIN_COLOR}
-                    bitRate={256000}
-                    sampleRate={96000}
-                    timeSlice={3000} />
+                    backgroundColor={MAIN_COLOR}                    
+                />
             </Box>
             <Box sx={{ display: 'flex', alignContent: 'center', alignItems: 'center', justifyContent: 'center', }}>
                 <StartRecButton startRecording={startRecording} />

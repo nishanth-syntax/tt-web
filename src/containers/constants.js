@@ -1,6 +1,6 @@
 export const MAIN_COLOR = `#fff`;
-export const SUB_COLOR = `#34495E`;
-export const DEF_COLOR = `#17202A`;
+export const SUB_COLOR = `#602080`;
+export const DEF_COLOR = `#202060`;
 export const TRANSPARENT = `#transparent`;
 
 export const MAIN_TXT_SIZE = 25;
