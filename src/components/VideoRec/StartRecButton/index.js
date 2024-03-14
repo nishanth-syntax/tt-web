@@ -9,7 +9,7 @@ const StartRecButton = ({ startRecording }) => {
     // const timerStarted = useSelector((state) => state?.VideoRecReducer?.timerStarted)
 
     return (
-        <Box onClick={startRecording}sx={recButtonStyle}/>
+        <Box onClick={startRecording} sx={recButtonStyle}/>
     )
 }
 

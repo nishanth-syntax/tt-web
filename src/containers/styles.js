@@ -2,9 +2,11 @@ import { DEF_COLOR, MAIN_COLOR, SUB_COLOR } from './constants'
 
 export const mainStyle = {
     display: 'flex',    
-    flexDirection: 'column',
-    width: '100%',
     height: '100vh',
+    flexDirection: 'column',
+    alignItems: 'center',
+    alignContent: 'center',
+    justifyContent: 'center',
     background: MAIN_COLOR,
-    padding: 0,
+    padding: 0
 }

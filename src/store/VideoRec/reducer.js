@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { LANG_DEF, VIDEO_REC_INIT_STATE } from './constants';
+import { DEF_TXT, LANG_DEF, VIDEO_REC_INIT_STATE } from './constants';
 
 export const videoRecorderSlice = createSlice({
     name: 'videoRecorderSlice',
@@ -18,8 +18,22 @@ export const videoRecorderSlice = createSlice({
         stopTimer: (state) => {
             state.timerStarted = false
         },
+        setTranscription: (state, action) => {
+            state.transcriptionText = `${state.transcriptionText} | ${action.payload.value}`;
+            // state.transcriptionText = action.payload.value;
+        },
+        clearTranscription: (state) => {
+            state.transcriptionText = DEF_TXT
+        },
     }
 })
 
-export const { languageSet, languageClear, startTimer, stopTimer } = videoRecorderSlice.actions
+export const {
+    languageSet,
+    languageClear,
+    startTimer,
+    stopTimer,
+    setTranscription,
+    clearTranscription,
+} = videoRecorderSlice.actions
 export default videoRecorderSlice.reducer

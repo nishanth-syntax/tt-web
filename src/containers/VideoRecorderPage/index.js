@@ -16,7 +16,7 @@ const VideoRecorderPage = () => {
 
     return (
         <Container style={mainStyle}>
-            <Header />       
+            {/* <Header />        */}
             <Translate />
             <Recorder />
         </Container>

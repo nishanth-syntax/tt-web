@@ -1,6 +1,8 @@
-export const LANG_DEF = `te`;
+export const LANG_DEF = `te-IN`; //te-IN //en-US
+export const DEF_TXT = `...`;
 export const VIDEO_REC_INIT_STATE = {
     langageSelected: LANG_DEF,
     recIsPlaying: false,
     timerStarted: false,
+    transcriptionText: DEF_TXT
 }
