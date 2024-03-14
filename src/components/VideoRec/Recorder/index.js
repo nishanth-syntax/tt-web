@@ -79,7 +79,7 @@ export const RecoderComponent = () => {
                     <span>{`${transcript}`}</span>
                 </List>
             </Box>
-            <Box sx={{ display: timerStarted ? 'flex' : 'none', position: 'absolute', bottom: 20 }}>
+            <Box sx={{ position: 'absolute', bottom: 20 }}>
                 <ReactMic
                     record={timerStarted}
                     className="sound-wave"
@@ -89,7 +89,7 @@ export const RecoderComponent = () => {
                     echoCancellation={true}
                     onStop={onStop}
                     onData={onData}
-                    strokeColor={DEF_COLOR}                    
+                    strokeColor={timerStarted ? MAIN_COLOR : SUB_COLOR}                    
                     backgroundColor={MAIN_COLOR} />
             </Box>
             <Box sx={{ display: 'flex', alignContent: 'center', alignItems: 'center', justifyContent: 'center', }}>                
