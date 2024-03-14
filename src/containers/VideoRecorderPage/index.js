@@ -6,6 +6,7 @@ import { mainStyle } from '../styles';
 import Header from '../../components/VideoRec/Header';
 import Translate from '../../components/VideoRec/Translate';
 import Recorder from '../../components/VideoRec/Recorder';
+import StreamRecorder from '../../components/StreamRecorder';
 
 const VideoRecorderPage = () => {
     React.useEffect(() => {
@@ -16,9 +17,10 @@ const VideoRecorderPage = () => {
 
     return (
         <Container style={mainStyle}>
-            <Header />       
+            {/* <Header />        */}
             {/* <Translate /> */}
             <Recorder />
+            {/* <StreamRecorder /> */}
         </Container>
     )
 }

@@ -10,7 +10,7 @@ const StartRecButton = ({ startRecording }) => {
 
     return (
         <Box onClick={startRecording} sx={recButtonStyle}>
-            {!timerStarted && <span style={{position: 'absolute', bottom: 50, width: '200', textAlign: 'center'}}>{`START`}</span>}
+            {/* {!timerStarted && <span style={{position: 'absolute', bottom: 50, width: '200', textAlign: 'center'}}>{`START`}</span>} */}
         </Box>
     )
 }

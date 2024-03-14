@@ -1,6 +1,6 @@
 import SpeechRecognition from 'react-speech-recognition'
 
-export const initSpeechRecognition = (langStr = 'te') => {
+export const initSpeechRecognition = (langStr = 'hi') => {
   SpeechRecognition.startListening({ language: langStr, continuous: true })
     .then((response) => {
       console.warn(`SpeechRecognition.startListening ACTIVE`)

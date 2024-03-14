@@ -3,7 +3,7 @@ import { mainStyle } from '../../../containers/styles'
 
 export const headerStyle = {
     ...mainStyle,
-    backgroundColor: DEF_COLOR,    
+    backgroundColor: SUB_COLOR,    
     height: '10vh',
     position: 'absolute',
     top: 5
