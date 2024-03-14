@@ -7,7 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { useSelector } from 'react-redux'
 
 import { translateStyle } from "./styles";
-import { SUB_COLOR } from "../../../containers/constants";
+import { MAIN_COLOR, SUB_COLOR } from "../../../containers/constants";
 
 export const TranslateComponent = () => {
     const transcriptionText = useSelector((state) => state?.VideoRecReducer?.transcriptionText)
@@ -16,15 +16,19 @@ export const TranslateComponent = () => {
     return (
         <Container sx={translateStyle}>
             <Box sx={{
+                display: 'flex',
                 width: '100%',
-                maxWidth: 360,                
-                position: 'relative',
                 overflow: 'auto',
-                maxHeight: 300,
+                height: 400,
+                maxHeight: 400,
+                backgroundColor: MAIN_COLOR,
+                alignContent: 'center',
+                alignItems: 'center',
+                justifyContent: 'center',
                 '& ul': { padding: 1 },
             }}>
                 <nav aria-label="main mailbox folders">
-                    <List>
+                    <List>                        
                         {transcriptionText?.split(' | ')?.map((element, index) => {
                             return (
                                 <ListItem key={index} disablePadding>

@@ -1,4 +1,4 @@
-export const MAIN_COLOR = `#cdcdcd`;
+export const MAIN_COLOR = `#fff`;
 export const SUB_COLOR = `#000`;
 export const DEF_COLOR = `#ccc`;
 export const TRANSPARENT = `#transparent`;
