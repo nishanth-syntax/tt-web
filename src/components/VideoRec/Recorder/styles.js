@@ -3,5 +3,5 @@ import { mainStyle } from '../../../containers/styles'
 export const recorderStyle = {
     ...mainStyle,    
     backgroundColor: MAIN_COLOR,   
-    height: '20vh',
+    height: '60vh',
 }
