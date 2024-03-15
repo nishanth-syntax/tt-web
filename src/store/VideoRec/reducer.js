@@ -19,8 +19,8 @@ export const videoRecorderSlice = createSlice({
             state.timerStarted = false
         },
         setTranscription: (state, action) => {
-            // state.transcriptionText = `${state.transcriptionText} | ${action.payload.value}`;
-            state.transcriptionText = action.payload.value;
+            state.transcriptionText = action.payload.value  !==  state.transcriptionText ? `${state.transcriptionText} | ${action.payload.value}` : state.transcriptionText;
+            // state.transcriptionText = action.payload.value;
         },
         clearTranscription: (state) => {
             state.transcriptionText = DEF_TXT
