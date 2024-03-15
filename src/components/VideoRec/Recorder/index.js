@@ -22,15 +22,15 @@ export const RecoderComponent = () => {
     const [mediaRecorder, setMediaRecorder] = React.useState(null);
     const [chunkData, setChunkData] = React.useState([]);
     
-    console.warn(`transcriptionText ==> ${transcriptionText}`);
     function onTranslate(audioBlob) {
         gTranslate(audioBlob)
             .then((response) => {
                 if (response?.data?.results && response?.data?.results?.length > 0) {
                     const result = response.data.results[0].alternatives[0].transcript;
+                    console.warn(`result:`, result);
                     dispatch(setTranscription({ value: result }))                    
-                } else {
-                    console.warn('No transcription results in the API response:', response.data);
+                    setChunkData([]);
+                } else {                    
                     setTranscription('No transcription available');
                 }
             })
@@ -56,7 +56,7 @@ export const RecoderComponent = () => {
                     video: false,                    
                 });
                 const recorder = new MediaRecorder(stream);
-                recorder.start(5000);
+                recorder.start(1000);
                 recorder.addEventListener('dataavailable', async (event) => {
                     const audioBlob = event.data;                    
                     onDataFunc(audioBlob);
@@ -114,7 +114,7 @@ export const RecoderComponent = () => {
                 <ReactMic
                     record={timerStarted}
                     className="sound-wave"
-                    visualSetting="sinewave"
+                    visualSetting="frequencyBars"
                     mimeType="audio/mp3"
                     noiseSuppression={true}
                     echoCancellation={true}
