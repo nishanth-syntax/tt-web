@@ -19,6 +19,7 @@ export const videoRecorderSlice = createSlice({
             state.timerStarted = false
         },
         setTranscription: (state, action) => {
+            console.warn(`setTranscription:`, action)
             state.transcriptionText = `${state.transcriptionText} | ${action.payload.value}`;
             // state.transcriptionText = action.payload.value;
         },

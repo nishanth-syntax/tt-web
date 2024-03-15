@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-
+import { gTranslate } from '../../utils/googleSpeechAPI';
 // Function to convert audio blob to base64 encoded string
 const audioBlobToBase64 = (blob) => {
   return new Promise((resolve, reject) => {
@@ -39,7 +39,6 @@ const StreamRecorder = () => {
   //   throw new Error("REACT_APP_GOOGLE_API_KEY not found in the environment");
   // }
 
-  const apiKey = "AIzaSyCSAxdNeuDmlWH_ARO2UII5uAxCk1ggRNo";
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -57,33 +56,21 @@ const StreamRecorder = () => {
 
         try {
           const startTime = performance.now();
+          gTranslate(base64Audio)
+            .then((response) => {
+              const endTime = performance.now();
+              const elapsedTime = endTime - startTime;
 
-          const response = await axios.post(
-            `https://speech.googleapis.com/v1/speech:recognize?key=${apiKey}`,
-            {
-              config: {
-                encoding: 'WEBM_OPUS',
-                sampleRateHertz: 48000,
-                languageCode: 'en-US',
-              },
-              audio: {
-                content: base64Audio,
-              },
-            }
-          );
+              console.log('API response:', response);              
+              console.log('Time taken (ms):', elapsedTime);
 
-          const endTime = performance.now();
-          const elapsedTime = endTime - startTime;
-
-          //console.log('API response:', response);
-          console.log('Time taken (ms):', elapsedTime);
-
-          if (response.data.results && response.data.results.length > 0) {
-            setTranscription(response.data.results[0].alternatives[0].transcript);
-          } else {
-            console.log('No transcription results in the API response:', response.data);
-            setTranscription('No transcription available');
-          }
+              if (response.data.results && response.data.results.length > 0) {
+                setTranscription(response.data.results[0].alternatives[0].transcript);
+              } else {
+                console.log('No transcription results in the API response:', response.data);
+                setTranscription('No transcription available');
+              }
+            })          
         } catch (error) {
           console.error('Error with Google Speech-to-Text API:', error.response.data);
         }
@@ -109,9 +96,9 @@ const StreamRecorder = () => {
       <button onClick={startRecording}>Start Recording</button>
       <button onClick={stopRecording}>Stop Recording</button>
       <p>Transcription: {transcription}</p>
-  </Box>
-);
+    </Box>
+  );
 
-return (mode4);
+  return (mode4);
 };
 export default StreamRecorder;

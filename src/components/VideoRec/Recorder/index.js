@@ -5,70 +5,92 @@ import List from '@mui/material/List';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux'
 import { ReactMic } from 'react-mic';
-import { forEach, get } from 'lodash';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 import StartRecButton from '../StartRecButton'
 import { recorderStyle } from "./styles";
-import { startTimer, stopTimer, setTranscription, clearTranscription } from "../../../store/VideoRec/reducer";
-import { initSpeechRecognition, stopSpeechRecognition, getSpeechRecognition } from "../../../utils/speechRecognition";
-
+import { startTimer, stopTimer, setTranscription } from "../../../store/VideoRec/reducer";
+import { audioBlobToBase64 } from '../../../utils/audioBlobToBase64';
 import { SUB_COLOR, MAIN_COLOR, DEF_COLOR, LANG_DEF, SAMPLE_GIBBERISH } from "../../../containers/constants";
+import { gTranslate } from "../../../utils/googleSpeechAPI";
 
 export const RecoderComponent = () => {
     const scrollRef = React.useRef();
     const dispatch = useDispatch();
     const timerStarted = useSelector((state) => state?.VideoRecReducer?.timerStarted)
+    const transcriptionText = useSelector((state) => state?.VideoRecReducer?.transcriptionText)
     const [recStart, setRecStart] = React.useState()
-    navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-
-    const {
-        transcript,
-        listening,
-        resetTranscript,
-        browserSupportsSpeechRecognition
-    } = useSpeechRecognition();
-
-    if (!browserSupportsSpeechRecognition) {
-        return <span>Browser doesn't support speech recognition.</span>;
+    const [mediaRecorder, setMediaRecorder] = React.useState(null);
+    const [chunkData, setChunkData] = React.useState([]);
+    
+    console.warn(`transcriptionText ==> ${transcriptionText}`);
+    function onTranslate(audioBlob) {
+        gTranslate(audioBlob)
+            .then((response) => {
+                if (response?.data?.results && response?.data?.results?.length > 0) {
+                    const result = response.data.results[0].alternatives[0].transcript;
+                    dispatch(setTranscription({ value: result }))                    
+                } else {
+                    console.warn('No transcription results in the API response:', response.data);
+                    setTranscription('No transcription available');
+                }
+            })
     }
 
-    const onStop = () => {
-        SpeechRecognition.stopListening();
+    function onDataFunc(recordedBlob) {
+        if (!recordedBlob) return;
+
+        const updatedChunk = chunkData;
+        setChunkData(updatedChunk.push(recordedBlob))
+        const blob = new Blob(updatedChunk, { type: mediaRecorder?.mimeType });
+        audioBlobToBase64(blob)
+            .then((response) => {
+                onTranslate(response);                
+            })
     }
 
-    const onData = (recordedBlob) => {
-        console.warn(`onData:`, transcript);
-        // // if(transcript?.length > 0) dispatch(setTranscription(transcript))
-        // if (scrollRef.current) {
-        //     scrollRef.current.scrollIntoView?.({ behaviour: "smooth" });
-        // }
-    }
-
-
-    const startRecording = () => {
-        try {
+    const startRecording = async () => {
+        try {            
             if (!recStart) {
-                SpeechRecognition.startListening({ language: LANG_DEF, continuous: true, interimResults: true })
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    audio: true,
+                    video: false,                    
+                });
+                const recorder = new MediaRecorder(stream);
+                recorder.start(5000);
+                recorder.addEventListener('dataavailable', async (event) => {
+                    const audioBlob = event.data;                    
+                    onDataFunc(audioBlob);
+                })
+
+                setMediaRecorder(recorder);                
                 dispatch(startTimer())
                 setRecStart(true)
                 return;
             }
 
-            dispatch(stopTimer())
-            setRecStart(false)
+            onStop();
         } catch (e) {
             console.warn(`ERR:`, e)
         }
     }
 
+    const onStop = (e) => {
+        dispatch(stopTimer())
+        setRecStart(false);
+        if (mediaRecorder) {
+            mediaRecorder.stop();
+            mediaRecorder.removeEventListener('dataavailable');
+            console.log('Recording stopped');            
+        }
+    }
+
     const clickToCopy = () => {
-        navigator.clipboard.writeText(transcript)
+        navigator.clipboard.writeText(transcriptionText)
     }
 
     return (
         <Container sx={recorderStyle}>
-            <Button sx={{display: transcript?.length > 0 ? 'flex' : 'none', padding: 5, color:SUB_COLOR}} color="info" onClick={clickToCopy}>
+            <Button sx={{ display: transcriptionText?.length > 0 ? 'flex' : 'none', padding: 5, color: SUB_COLOR }} color="info" onClick={clickToCopy}>
                 Click to Copy Text
             </Button>
             <Box sx={{
@@ -85,7 +107,7 @@ export const RecoderComponent = () => {
                 '& ul': { padding: 1 },
             }}>
                 <List ref={scrollRef}>
-                    <span style={{fontSize: 22}}>{`${transcript}`}</span>
+                    <span style={{ fontSize: 22 }}>{`${transcriptionText}`}</span>
                 </List>
             </Box>
             <Box sx={{ position: 'absolute', top: 10 }}>
@@ -97,9 +119,9 @@ export const RecoderComponent = () => {
                     noiseSuppression={true}
                     echoCancellation={true}
                     onStop={onStop}
-                    onData={onData}
+                    // onData={onDataFunc}
                     strokeColor={timerStarted ? MAIN_COLOR : SUB_COLOR}
-                    backgroundColor={MAIN_COLOR}                    
+                    backgroundColor={MAIN_COLOR}
                 />
             </Box>
             <Box sx={{ display: 'flex', alignContent: 'center', alignItems: 'center', justifyContent: 'center', }}>
