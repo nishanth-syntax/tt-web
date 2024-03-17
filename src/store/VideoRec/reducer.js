@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { DEF_TXT, LANG_DEF, VIDEO_REC_INIT_STATE } from './constants';
+import { DEF_TXT, LANG_DEF, SPLIT_TXT, VIDEO_REC_INIT_STATE } from './constants';
 
 export const videoRecorderSlice = createSlice({
     name: 'videoRecorderSlice',
@@ -19,8 +19,8 @@ export const videoRecorderSlice = createSlice({
             state.timerStarted = false
         },
         setTranscription: (state, action) => {
-            state.transcriptionText = action.payload.value  !==  state.transcriptionText ? `${state.transcriptionText} | ${action.payload.value}` : state.transcriptionText;
-            // state.transcriptionText = action.payload.value;
+            // state.transcriptionText = action.payload.value  !==  state.transcriptionText ? `${state.transcriptionText}${SPLIT_TXT}${action.payload.value}` : state.transcriptionText;
+            state.transcriptionText = action.payload.value;
         },
         clearTranscription: (state) => {
             state.transcriptionText = DEF_TXT

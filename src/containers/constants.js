@@ -11,6 +11,7 @@ export const DELAY_MS = 450;
 export const TIMEOUT_MS = 450;
 
 export const REC_DURATION_MS = 15000;
+export const CHUNK_MS = 10000;
 export const LANG_DEF = `te-IN`; //te-IN //en-US
 
 export const SAMPLE_GIBBERISH = `Record a user's voice and display as an oscillation (or frequency bars).
