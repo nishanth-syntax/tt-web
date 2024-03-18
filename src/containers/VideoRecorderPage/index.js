@@ -18,15 +18,12 @@ const VideoRecorderPage = () => {
 
   return (
     <Container style={mainStyle}>
-      {/* <Header />        */}
-      {/* <Translate /> */}
-      <Recorder />
-      {/* <StreamRecorder /> */}
-      <AdSense.Google
-        client="ca-pub-4132517034655732"
-              slot="5629399846"
-              style={{ width: 500, height: 300, float: 'left' }}      
-      />
+      <Recorder />      
+      <ins className='adsbygoogle'
+          style={{ display: 'block' }}
+          data-ad-client='ca-pub-4132517034655732'
+          data-ad-slot='5629399846'
+          data-ad-format='auto' />
     </Container>
   );
 };

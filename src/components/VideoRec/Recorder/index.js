@@ -59,7 +59,6 @@ export const RecoderComponent = () => {
   function onTranslate(audioBlob) {
     gTranslate(audioBlob).then((response) => {
       if (response?.data?.results && response?.data?.results?.length > 0) {
-        // const result = response.data.results[0].alternatives[0].transcript;
         const alternatives = response.data.results[0].alternatives[0].words;
         getTextFromTrx(alternatives);
       } else {
@@ -75,7 +74,6 @@ export const RecoderComponent = () => {
 
     if (cArray?.length > 1) {
       return [cArray[cArray.length - 2], cArray[cArray.length - 1]];
-      // return [cArray[0], cArray[1]]
     }
   };
 
